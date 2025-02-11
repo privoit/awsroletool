@@ -10,7 +10,7 @@ class AwsRoleTool < Formula
 
     # Mount DMG
     system "hdiutil", "attach", dmg_path
-    app_path = "/Volumes/AWS Role Tool/AWS Role Tool.app"
+    app_path = "/Volumes/AWS Role Tool 1.0.0-arm64/AWS Role Tool.app"
 
     # Ensure App Exists
     unless File.exist?(app_path)
