@@ -6,27 +6,18 @@ class AwsRoleTool < Formula
   sha256 "19461526f140a11e80cebd619ead41a5ca57a09ddb072d51799d9c6a7cacb02a"
 
   def install
-    system "hdiutil", "attach", "AWS.Role.Tool-1.0.0-arm64.dmg"
+    dmg_path = cached_download # Use Homebrew's cached path
+
+    system "hdiutil", "attach", dmg_path, "-mountpoint", "/Volumes/AWS Role Tool"
     system "cp", "-r", "/Volumes/AWS Role Tool/AWS Role Tool.app", "#{prefix}/AWS Role Tool.app"
     system "hdiutil", "detach", "/Volumes/AWS Role Tool"
   end
 
   def caveats
     <<~EOS
-      After installing, you may need to run:
-      brew link --force aws-role-tool
+      AWS Role Tool has been installed!
+      Open it from Applications or run:
+        open #{prefix}/AWS\ Role\ Tool.app
     EOS
-  end
-  
-  def fetch
-    # Use GitHub CLI (`gh`) to download private release assets
-    system "gh", "release", "download", "v1.0.0",
-           "-R", "privoit/awsroletool",
-           "--pattern", "AWS.Role.Tool-1.0.0-arm64.dmg"
-    super
-  end
-
-  def uninstall
-    system "rm", "-rf", "#{prefix}/AWS Role Tool.app"
   end
 end
