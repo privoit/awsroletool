@@ -17,6 +17,14 @@ class AwsRoleTool < Formula
       brew link --force aws-role-tool
     EOS
   end
+  
+  def fetch
+    # Use GitHub CLI (`gh`) to download private release assets
+    system "gh", "release", "download", "v1.0.0",
+           "-R", "privoit/awsroletool",
+           "--pattern", "AWS.Role.Tool-1.0.0-arm64.dmg"
+    super
+  end
 
   def uninstall
     system "rm", "-rf", "#{prefix}/AWS Role Tool.app"
