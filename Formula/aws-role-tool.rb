@@ -8,20 +8,19 @@ class AwsRoleTool < Formula
   def install
     dmg_path = cached_download
 
-    # Mount DMG
+    # Mount the DMG
     system "hdiutil", "attach", dmg_path
-    app_path = "/Volumes/AWS Role Tool 1.0.0-arm64/AWS Role Tool.app"
+    sleep 2  # Give macOS time to mount the volume
 
-    # Ensure App Exists
-    unless File.exist?(app_path)
-      raise "❌ App not found in DMG! Check the volume name."
-    end
+    # Detect the correct volume name
+    volume_name = Dir.glob("/Volumes/AWS Role Tool*").first
+    raise "❌ Volume not found!" unless volume_name
 
-    # Copy App to Homebrew Prefix
-    cp_r app_path, prefix
+    # Copy the app to Homebrew prefix
+    cp_r "#{volume_name}/AWS Role Tool.app", prefix
 
-    # Unmount DMG
-    system "hdiutil", "detach", "/Volumes/AWS Role Tool"
+    # Unmount the DMG safely
+    system "hdiutil", "detach", volume_name
   end
 
   def caveats
